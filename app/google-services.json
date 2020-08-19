@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "473754898546",
+    "firebase_url": "https://fir-upload-2e333.firebaseio.com",
+    "project_id": "fir-upload-2e333",
+    "storage_bucket": "fir-upload-2e333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473754898546:android:d1081592a1b7b1c8a172eb",
+        "android_client_info": {
+          "package_name": "com.example.ElectricBeatBook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473754898546-2ajaf74gmnh7b10769rm3ajp69bubeo7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ElectricBeatBook",
+            "certificate_hash": "f3539d06feda3b28d0edf0a608ca522df5ea19b6"
+          }
+        },
+        {
+          "client_id": "473754898546-nqrdcrieemj07o58n5f4ef8muijnrcl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASkz6XwV_jRUyzgXGZesRCm8eHnumsOyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473754898546-nqrdcrieemj07o58n5f4ef8muijnrcl0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

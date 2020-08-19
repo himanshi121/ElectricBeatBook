@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GalleryActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingEnd="10dp"
+            android:background="#FFFFFF"
+            app:popupTheme="@style/ToolbarTheme"
+            app:titleMargin="0dp"
+            app:titleMargins="0dp"
+            app:titleTextColor="#FFFFFF" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/wishlist_activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:elevation="4dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Gallery"
+        android:textColor="#545353"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/appbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
