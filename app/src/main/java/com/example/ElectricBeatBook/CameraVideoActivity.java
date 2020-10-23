@@ -2,9 +2,7 @@ package com.example.ElectricBeatBook;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -21,6 +19,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.ExifInterface;
 import android.location.Location;
 import android.media.Image;
 import android.media.ImageReader;
@@ -57,8 +56,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+
 
 public class CameraVideoActivity extends AppCompatActivity {
     private static final String TAG = "Camera2VideoImageActivi";
@@ -67,7 +69,6 @@ public class CameraVideoActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_RESULT = 1;
     private static final int REQUEST_ACCESS_FINE_LOCATION_RESULT=2;
 
-    private String[] permission={Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
     private TextureView mTextureView;
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -197,30 +198,6 @@ public class CameraVideoActivity extends AppCompatActivity {
         //Initialoze fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if (ActivityCompat.checkSelfPermission(CameraVideoActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
-
-                        try {
-                            Geocoder geocoder = new Geocoder(CameraVideoActivity.this, Locale.getDefault());
-
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),
-                                    1);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-        } else {
-            ActivityCompat.requestPermissions(CameraVideoActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    44);
-        }
         mRecordImageButton.setPadding(24,24,24,24);
 
         mStillImageButton.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +210,48 @@ public class CameraVideoActivity extends AppCompatActivity {
                     try {
 
                         takePicture();
+
+                        if (checkSelfPermission( Manifest.permission.ACCESS_FINE_LOCATION) ==
+                                PackageManager.PERMISSION_GRANTED) {
+                            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Location> task) {
+                                    Toast.makeText(CameraVideoActivity.this, "YESSS", Toast.LENGTH_SHORT).show();
+
+                                    Location location = task.getResult();
+                                    if (location != null) {
+                                        try {
+                                            Geocoder geocoder = new Geocoder(CameraVideoActivity.this, Locale.getDefault());
+
+                                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),
+                                                    1);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(CameraVideoActivity.this, "NOOO", Toast.LENGTH_SHORT).show();
+                            requestPermissions( new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_ACCESS_FINE_LOCATION_RESULT);
+                        }
+                        GPSTracker gps;
+                        gps = new GPSTracker(CameraVideoActivity.this);
+                        if(gps.canGetLocation())
+                        {
+                            double latitude = gps.getLatitude();
+                            double longitude = gps.getLongitude();
+
+                            // \n is for new line
+                            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                        } else {
+                            // Can't get location.
+                            // GPS or network is not enabled.
+                            // Ask user to enable GPS/network in settings.
+
+                        }
 //                    checkWriteStoragePermission();
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
@@ -297,7 +316,7 @@ public class CameraVideoActivity extends AppCompatActivity {
         }
 
     }
-
+//
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -327,7 +346,7 @@ public class CameraVideoActivity extends AppCompatActivity {
         }
 
          if(requestCode == REQUEST_ACCESS_FINE_LOCATION_RESULT) {
-            if(grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this,
                         "Permission successfully granted!", Toast.LENGTH_SHORT).show();
             } else {
@@ -335,10 +354,6 @@ public class CameraVideoActivity extends AppCompatActivity {
                         "App needs to access location to run", Toast.LENGTH_SHORT).show();
             }
         }
-
-
-
-
     }
 
     @Override
@@ -453,11 +468,13 @@ public class CameraVideoActivity extends AppCompatActivity {
         captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
 
 
+
         Long tsLong = System.currentTimeMillis() / 1000;
         String ts = tsLong.toString();
 
         file=new File(Environment.getExternalStorageDirectory()+"/"+ts+".jpg");
-
+      //  final Parameters pms = new Parameters();
+//        final Parameters finalPms = pms;
         ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
@@ -469,6 +486,26 @@ public class CameraVideoActivity extends AppCompatActivity {
                 buffer.get(bytes);
                 try {
                     save(bytes);
+
+                    GPSTracker gps;
+
+                    gps = new GPSTracker(CameraVideoActivity.this);
+                    if(gps.canGetLocation())
+                    {
+                        double latitude = gps.getLatitude();
+                        double longitude = gps.getLongitude();
+
+                        ExifInterface exif = new ExifInterface(file.getPath());
+                        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,dec2DMS(gps.getLatitude()));
+                        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,dec2DMS(gps.getLongitude()));
+                        exif.saveAttributes();
+
+
+
+                    } else {
+
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
@@ -516,6 +553,18 @@ public class CameraVideoActivity extends AppCompatActivity {
 
 
     }
+
+    private String dec2DMS(double coord) {
+        coord = coord > 0 ? coord : -coord;
+        String sOut = Integer.toString((int)coord) + "/1,";
+        coord = (coord % 1) * 60;
+        sOut = sOut + Integer.toString((int)coord) + "/1,";
+        coord = (coord % 1) * 60000;
+        sOut = sOut + Integer.toString((int)coord) + "/1000";
+        return sOut;
+    }
+
+
     private void startRecord() {
 
         try {
@@ -650,7 +699,12 @@ public class CameraVideoActivity extends AppCompatActivity {
 
         outputStream.close();
 
+
+
     }
+
+
+
 
     private void createVideoFolder() {
         File movieFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
@@ -735,6 +789,8 @@ public class CameraVideoActivity extends AppCompatActivity {
         mMediaRecorder.setOrientationHint(mTotalRotation);
         mMediaRecorder.prepare();
     }
+
+
 
 
 }

@@ -1,3 +1,4 @@
+
 package com.example.ElectricBeatBook;
 
 import androidx.annotation.NonNull;
@@ -21,10 +22,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity {
@@ -64,13 +67,16 @@ public class GalleryActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         RecyclerView.setLayoutManager(layoutManager);
 
-        firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).collection("UserData").get()
+        firebaseFirestore.collection("Users")
+                .document(firebaseAuth.getCurrentUser().getUid()).collection("UserData")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                                uploadImageList.add(new UploadImage(documentSnapshot.get("imageUrl").toString(),documentSnapshot.get("name").toString(),documentSnapshot.get("details").toString()));
+                                uploadImageList.add(new UploadImage(documentSnapshot.get("imageUrl").toString(),documentSnapshot.get("name").toString(),documentSnapshot.get("details").toString(),documentSnapshot.get("timestamp").toString()));
                             }
 
                             GalleryImageAdapter imageAdapter =new GalleryImageAdapter(uploadImageList);

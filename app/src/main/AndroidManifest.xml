@@ -7,16 +7,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
-
-
-
-
-
 
     <application
         android:allowBackup="true"
@@ -25,19 +18,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.example.ElectricBeatBook.GalleryActivity"></activity>
-        <activity android:name="com.example.ElectricBeatBook.EditAccountActivity" />
-        <activity android:name="com.example.ElectricBeatBook.SplashActivity">
+        <activity android:name=".GalleryActivity" />
+        <activity android:name=".EditAccountActivity" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.ElectricBeatBook.UserSession.UserSessionActivity" />
-        <activity android:name="com.example.ElectricBeatBook.FirebaseUploadActivity" />
-        <activity android:name="com.example.ElectricBeatBook.CameraVideoActivity" />
-        <activity android:name="com.example.ElectricBeatBook.MainActivity" />
+
+        <activity android:name=".UserSession.UserSessionActivity" />
+        <activity android:name=".FirebaseUploadActivity" />
+        <activity android:name=".CameraVideoActivity" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/CropTheme" /> <!-- optional (needed if default theme has no action bar) -->

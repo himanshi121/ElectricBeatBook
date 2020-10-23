@@ -60,6 +60,8 @@ public class OTPFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
 
 
+
+
     public OTPFragment() {
         // Required empty public constructor
     }
@@ -67,6 +69,17 @@ public class OTPFragment extends Fragment {
         this.username = username;
         this.phone = phone;
         this.password = password;
+    }
+
+
+    private void init(View view){
+        verification_txt=view.findViewById(R.id.verification_txt);
+        otp_sent_txt=view.findViewById(R.id.otp_sent_txt);
+        enter_otp=view.findViewById(R.id.enter_otp);
+        verify=view.findViewById(R.id.verify_btn);
+        resend=view.findViewById(R.id.resend_btn);
+        progressBar=view.findViewById(R.id.progressBar);
+
     }
 
     @Override
@@ -92,7 +105,7 @@ public class OTPFragment extends Fragment {
                 }, null, Shader.TileMode.CLAMP);
         verification_txt.setTextColor(Color.parseColor("#7986CB"));
         verification_txt.getPaint().setShader(textShader);
-
+        firebaseAuth=FirebaseAuth.getInstance();
 
         otp_sent_txt.setText("OTP has been sent to +91"+phone);
         sendOTP();
@@ -149,7 +162,7 @@ public class OTPFragment extends Fragment {
             }
         });
 
-        firebaseAuth=FirebaseAuth.getInstance();
+
 
 
     }
@@ -311,14 +324,6 @@ public class OTPFragment extends Fragment {
 
 
 
-    private void init(View view){
-        verification_txt=view.findViewById(R.id.verification_txt);
-        otp_sent_txt=view.findViewById(R.id.otp_sent_txt);
-        enter_otp=view.findViewById(R.id.enter_otp);
-        verify=view.findViewById(R.id.verify_btn);
-        resend=view.findViewById(R.id.resend_btn);
-        progressBar=view.findViewById(R.id.progressBar);
 
-    }
 
 }

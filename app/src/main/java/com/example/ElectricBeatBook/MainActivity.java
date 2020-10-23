@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         txt_username = findViewById(R.id.txt_username);
         txt_email = findViewById(R.id.email);
 
-editprofile=findViewById(R.id.user_img);
+        editprofile=findViewById(R.id.user_img);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {

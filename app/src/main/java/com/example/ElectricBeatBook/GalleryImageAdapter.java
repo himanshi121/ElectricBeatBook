@@ -70,7 +70,8 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<GalleryImageAdapte
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), details, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(itemView.getContext(), details
+                            , Toast.LENGTH_SHORT).show();
                 }
             });
             }
